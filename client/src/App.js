@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ChatUI from "./components/ChatUI";
 import Login from "./components/Login";
+import Register from "./components/Register";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [isRegistering, setIsRegistering] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -52,7 +54,17 @@ function App() {
           <ChatUI />
         </div>
       ) : (
-        <Login onLoginSuccess={handleLoginSuccess} />
+        isRegistering ? (
+          <Register 
+            onRegisterSuccess={handleLoginSuccess}
+            onSwitchToLogin={() => setIsRegistering(false)}
+          />
+        ) : (
+          <Login 
+            onLoginSuccess={handleLoginSuccess}
+            onSwitchToRegister={() => setIsRegistering(true)}
+          />
+        )
       )}
     </div>
   );

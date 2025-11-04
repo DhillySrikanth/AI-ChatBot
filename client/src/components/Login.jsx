@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
 
-const Login = ({ onLoginSuccess }) => {
+const Login = ({ onLoginSuccess, onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -100,6 +100,16 @@ const Login = ({ onLoginSuccess }) => {
               )}
             </button>
           </form>
+
+          <div className="register-link">
+            Don't have an account?{' '}
+            <button 
+              onClick={onSwitchToRegister}
+              className="switch-button"
+            >
+              Create one here
+            </button>
+          </div>
 
           <div className="demo-credentials">
             <h3>Demo Access</h3>
