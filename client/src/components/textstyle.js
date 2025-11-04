@@ -23,6 +23,7 @@ const TextType = ({
   onSentenceComplete,
   startOnVisible = false,
   reverseMode = false,
+  renderer = null,
   ...props
 }) => {
   const [displayedText, setDisplayedText] = useState('');
@@ -157,7 +158,7 @@ const TextType = ({
       ...props
     },
     <span className="text-type__content" style={{ color: getCurrentTextColor() || 'inherit' }}>
-      {displayedText}
+      {renderer ? renderer(displayedText) : displayedText}
     </span>,
     showCursor && (
       <span
