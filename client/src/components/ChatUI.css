@@ -64,6 +64,11 @@ body, html {
   color: var(--light-text);
 }
 
+.light-theme .bot-avatar {
+  background: #fff;
+  border-color: #4339F2;
+}
+
 .light-theme .status {
   color: var(--light-secondary-text);
 }
@@ -126,13 +131,21 @@ body, html {
   height: 48px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid #4a4a8c;
+  border: 2px solid #4339F2;
+  background: #1a1a2e;
+  padding: 2px;
 }
 
 .bot-avatar img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  filter: drop-shadow(0 0 4px rgba(67, 57, 242, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.bot-avatar:hover img {
+  transform: scale(1.1);
 }
 
 .status-dot {

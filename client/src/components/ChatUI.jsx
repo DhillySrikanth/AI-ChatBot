@@ -102,7 +102,7 @@ const ChatUI = () => {
         <div className="header-content">
           <div className="bot-info">
             <div className="bot-avatar">
-              <img src="https://i.imgur.com/YDtC7rB.png" alt="Gemini AI" />
+              <img src="/avatar.jpg" alt="Gemini AI" />
               <span className="status-dot"></span>
             </div>
             <div className="bot-details">
@@ -154,7 +154,7 @@ const ChatUI = () => {
                     <div className="user-avatar">👤</div>
                   ) : (
                     <div className="bot-avatar">
-                      <img src="https://i.imgur.com/YDtC7rB.png" alt="Gemini AI" />
+                      <img src="/avatar.jpg" alt="Gemini AI" />
                     </div>
                   )}
                 </div>
