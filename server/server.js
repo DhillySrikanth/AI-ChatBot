@@ -50,11 +50,6 @@ app.get("/api/protected", protect, (req, res) => {
   res.json({ message: `Welcome ${req.user.email}, protected route access granted.` });
 });
 
-// ✅ Default route (optional)
-app.get("/", (req, res) => {
-  res.send("AI Chatbot backend is running 🚀");
-});
-
 // ✅ Global Error Handler (Optional but recommended)
 app.use((err, req, res, next) => {
   console.error(err.stack);
