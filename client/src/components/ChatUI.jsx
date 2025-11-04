@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "./ChatUI.css";
+import TextType from "./textstyle";
 
 const ChatUI = () => {
   const [messages, setMessages] = useState([]);
@@ -83,7 +84,19 @@ const ChatUI = () => {
               {msg.sender === "user" ? "🧑" : "🤖"}
             </div>
             <div className="message-content">
-              <div className="text">{msg.text}</div>
+              <div className="text">
+                {msg.sender === 'bot' ? (
+                  <TextType
+                    text={msg.text}
+                    typingSpeed={30}
+                    showCursor={false}
+                    loop={false}
+                    className="bot-text-animation"
+                  />
+                ) : (
+                  msg.text
+                )}
+              </div>
               <div className="timestamp">
                 {msg.time.toLocaleTimeString([], {
                   hour: "2-digit",
@@ -97,7 +110,16 @@ const ChatUI = () => {
           <div className="chat-message bot">
             <div className="avatar">🤖</div>
             <div className="message-content typing">
-              <div className="text">Typing...</div>
+              <div className="text">
+                <TextType
+                  text={["Typing", "Typing.", "Typing..", "Typing..."]}
+                  typingSpeed={200}
+                  deletingSpeed={1}
+                  pauseDuration={0}
+                  showCursor={false}
+                  loop={true}
+                />
+              </div>
             </div>
           </div>
         )}

@@ -118,3 +118,21 @@
 .chat-input button:hover {
   background: #5757d9;
 }
+
+/* Text Animation Styles */
+.bot-text-animation {
+  display: inline-block;
+  min-height: 20px;
+}
+
+.text-type {
+  min-height: 24px;
+}
+
+.text-type__cursor {
+  color: #9ba1ff;
+}
+
+.typing .text-type {
+  color: #9ba1ff;
+}
