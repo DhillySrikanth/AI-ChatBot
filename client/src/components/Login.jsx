@@ -1,34 +1,39 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './Login.css';
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
-const Login = ({ onLoginSuccess, onSwitchToRegister }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+const Login = ({ onLogin }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setIsLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
 
       const { token, user } = response.data;
-      
-      // Store token and user info
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      
-      // Notify parent component
-      onLoginSuccess(user);
+
+      // ✅ Store user + token
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // ✅ Notify parent (App.js)
+      if (onLogin) onLogin(user);
+
+      // ✅ Redirect to Chat page
+      navigate("/chat");
     } catch (error) {
-      setError(error.response?.data?.message || 'Login failed');
+      setError(error.response?.data?.message || "Login failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -84,9 +89,9 @@ const Login = ({ onLoginSuccess, onSwitchToRegister }) => {
               </div>
             </div>
 
-            <button 
-              type="submit" 
-              className={`login-button ${isLoading ? 'loading' : ''}`}
+            <button
+              type="submit"
+              className={`login-button ${isLoading ? "loading" : ""}`}
               disabled={isLoading}
             >
               {isLoading ? (
@@ -96,15 +101,15 @@ const Login = ({ onLoginSuccess, onSwitchToRegister }) => {
                   <span className="loading-dots">.</span>
                 </span>
               ) : (
-                'Login to Chat'
+                "Login to Chat"
               )}
             </button>
           </form>
 
           <div className="register-link">
-            Don't have an account?{' '}
-            <button 
-              onClick={onSwitchToRegister}
+            Don’t have an account?{" "}
+            <button
+              onClick={() => navigate("/register")}
               className="switch-button"
             >
               Create one here

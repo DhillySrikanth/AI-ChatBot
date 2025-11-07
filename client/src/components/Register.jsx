@@ -1,35 +1,38 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './Register.css';
-import { motion } from 'framer-motion';
+import React, { useState } from "react";
+import axios from "axios";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import "./Register.css";
 
-const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+const Register = ({ onRegister }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
-    // Validation
+    // Basic validation
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
+      setError("Password must be at least 6 characters long");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/signup', {
+      // Register user
+      const response = await axios.post("http://localhost:5000/api/auth/signup", {
         name,
         email,
         password,
@@ -37,19 +40,25 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
 
       if (response.data.message === "User registered successfully") {
         // Auto login after successful registration
-        const loginResponse = await axios.post('http://localhost:5000/api/auth/login', {
+        const loginResponse = await axios.post("http://localhost:5000/api/auth/login", {
           email,
           password,
         });
 
         const { token, user } = loginResponse.data;
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-        
-        onRegisterSuccess(user);
+
+        // Save token and user to localStorage
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        // Notify parent (App.js)
+        if (onRegister) onRegister(user);
+
+        // Redirect to chat
+        navigate("/chat");
       }
     } catch (error) {
-      setError(error.response?.data?.message || 'Registration failed');
+      setError(error.response?.data?.message || "Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +67,7 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
   return (
     <div className="register-container">
       <div className="register-content">
-        <motion.div 
+        <motion.div
           className="register-box"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -66,7 +75,7 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
         >
           <div className="register-header">
             <div className="logo">
-              <motion.span 
+              <motion.span
                 className="logo-icon"
                 animate={{ rotate: [0, -10, 10, -10, 0] }}
                 transition={{ duration: 1, delay: 0.5 }}
@@ -79,7 +88,7 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
           </div>
 
           {error && (
-            <motion.div 
+            <motion.div
               className="error-message"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -150,9 +159,9 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
               </div>
             </div>
 
-            <motion.button 
-              type="submit" 
-              className={`register-button ${isLoading ? 'loading' : ''}`}
+            <motion.button
+              type="submit"
+              className={`register-button ${isLoading ? "loading" : ""}`}
               disabled={isLoading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -164,15 +173,15 @@ const Register = ({ onRegisterSuccess, onSwitchToLogin }) => {
                   <span className="loading-dots">.</span>
                 </span>
               ) : (
-                'Create Account'
+                "Create Account"
               )}
             </motion.button>
           </form>
 
           <div className="login-link">
-            Already have an account?{' '}
-            <motion.button 
-              onClick={onSwitchToLogin}
+            Already have an account?{" "}
+            <motion.button
+              onClick={() => navigate("/login")}
               className="switch-button"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
