@@ -302,7 +302,7 @@ const ChatUI = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <span className="logout-icon">⎋</span>
+                    <span className="logout-icon">⏻️</span>
                     <span className="logout-text">Logout</span>
                   </motion.button>
                 </div>
@@ -423,7 +423,7 @@ const ChatUI = () => {
             </motion.button>
           </div>
           <div className="input-footer">
-            <span className="input-tip">Press Enter to send (Tip: Use Shift+Enter for new line)</span>
+            <span className="input-tip">Press Enter to send </span>
           </div>
         </div>
       </footer>
